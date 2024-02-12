@@ -20,6 +20,12 @@ namespace catchDuckGame
         public Game()
         {
             InitializeComponent();
+            bullet5.BackColor = Color.Transparent;
+            bullet4.BackColor = Color.Transparent;
+            bullet3.BackColor = Color.Transparent;
+            bullet2.BackColor = Color.Transparent;
+            bullet1.BackColor = Color.Transparent;
+            duckGif.BackColor = Color.Transparent;
             flyTimer.Interval = 15;
             flyTimer.Start();
             score = 0;
