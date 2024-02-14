@@ -63,6 +63,16 @@ namespace catchDuckGame.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _648e4b24ab2d5 {
+            get {
+                object obj = ResourceManager.GetObject("648e4b24ab2d5", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap bullet {
             get {
                 object obj = ResourceManager.GetObject("bullet", resourceCulture);
@@ -76,6 +86,16 @@ namespace catchDuckGame.Properties {
         internal static System.Drawing.Bitmap bullet1 {
             get {
                 object obj = ResourceManager.GetObject("bullet1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap counter_strike_cs {
+            get {
+                object obj = ResourceManager.GetObject("counter-strike-cs", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

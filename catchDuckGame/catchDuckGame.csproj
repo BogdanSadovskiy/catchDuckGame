@@ -104,5 +104,11 @@
   <ItemGroup>
     <None Include="Resources\final.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\648e4b24ab2d5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\counter-strike-cs.gif" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
