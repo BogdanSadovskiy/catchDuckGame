@@ -49,7 +49,7 @@
             // 
             // flyTimer
             // 
-            this.flyTimer.Tick += new System.EventHandler(this.timer1_Tick);
+          
             // 
             // bullet5
             // 
@@ -113,7 +113,7 @@
             this.duckGif.InitialImage = global::catchDuckGame.Properties.Resources.duck__1_;
             this.duckGif.Location = new System.Drawing.Point(1, 112);
             this.duckGif.Name = "duckGif";
-            this.duckGif.Size = new System.Drawing.Size(42, 27);
+            this.duckGif.Size = new System.Drawing.Size(42, 28);
             this.duckGif.TabIndex = 0;
             this.duckGif.TabStop = false;
             this.duckGif.Click += new System.EventHandler(this.duckGif_Click);

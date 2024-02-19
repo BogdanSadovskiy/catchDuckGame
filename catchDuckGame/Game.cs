@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace catchDuckGame
@@ -11,18 +12,18 @@ namespace catchDuckGame
         int speedOfDuck;
         int score;
         int patrons;
-        int currentDucks;
-        bool isReloading = false;
+        int allPatrons = 60;
+        int gameLVL = 1;
         Timer reloadGunTimer = new Timer();
+        Timer checkIfReloaded = new Timer();
 
-
-        List<PictureBox> ducks = new List<PictureBox>();
+        List<Duck> ducks = new List<Duck>();
         ReloadPicturesAnimation ReloadPicturesAnimation = new ReloadPicturesAnimation();
         public Game()
         {
             InitializeComponent();
             this.DoubleBuffered = true;
-            ducks.Add(duckGif);
+         
             bullet5.BackColor = Color.Transparent;
             bullet4.BackColor = Color.Transparent;
             bullet3.BackColor = Color.Transparent;
@@ -30,38 +31,62 @@ namespace catchDuckGame
             bullet1.BackColor = Color.Transparent;
             duckGif.BackColor = Color.Transparent;
             reloadPicture.Visible = false;
+            duckGif.Visible = false;
 
-
-            flyTimer.Interval = 15;
+            flyTimer.Interval = 20;
             flyTimer.Start();
+            speedOfDuck = 1;
+            ducks.Add(new Duck(duckGif, flyTimer, ClientSize, speedOfDuck));
+            addPictureToControls(ducks.Last().getDuck());
 
-            speedOfDuck = 2;
+           
             score = 0;
             patrons = 5;
+   
 
 
         }
-
+        private void addPictureToControls(PictureBox picture)
+        {
+            Controls.Add(picture);
+        }
         private void ScoreCheck()
         {
             this.scoreLabel.Text = "Score: " + score;
+            if (score == 5 || score == 10 || score == 20 || score == 40 || score == 80)
+            {
+                speedOfDuck++;
+                createDuck();
+                gameLVL++;
+            }
         }
 
         private void createDuck()
         {
-
+            ducks.Add(ducks.Last());
+            addPictureToControls(ducks.Last().getDuck());
         }
         private void reloadGun()
         {
-            patrons = ReloadPicturesAnimation.animation(this.reloadPicture, reloadGunTimer,ref isReloading);
-            if(!isReloading)patronsCheck();
-            Console.WriteLine(isReloading);
+            
+            checkIfReloaded.Tick += CheckIfReloaded_Tick;
+            checkIfReloaded.Interval = 100;
+            checkIfReloaded.Start();
+            patrons = ReloadPicturesAnimation.animation(this.reloadPicture, reloadGunTimer);
+
+
         }
-        /* private void reloadGunTimer_Tick(object sender, EventArgs e)
-         {
-             reloadGunTimer.Stop();
-             reloadPicture.Visible = false;
-         }*/
+
+        private void CheckIfReloaded_Tick(object sender, EventArgs e)
+        {
+            if (ReloadPicturesAnimation.getP() == 1) {
+                patronsCheck();
+                checkIfReloaded.Stop();
+            }
+
+        }
+
+
         private void patronsCheck()
         {
 
@@ -106,48 +131,40 @@ namespace catchDuckGame
             }
         }
 
-        private void newDuckLocation(PictureBox picture)
+        private void allPatronsCheck()
         {
-            flyTimer.Interval = 3000;
-            picture.Visible = false;
-            picture.Location = new Point(0, picture.Location.Y);
-
-        }
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            if (duckGif.Location.X < ClientSize.Width)
+            if(allPatrons==0)
             {
-                flyTimer.Interval = 15;
-                duckGif.Visible = true;
-
-                duckGif.Location = new Point(duckGif.Location.X + speedOfDuck, duckGif.Location.Y);
-            }
-            else
-            {
-                newDuckLocation(duckGif);
+                this.scoreLabel.Location = new Point(this.ClientSize.Width / 2, this.ClientSize.Height / 2);
+                this.scoreLabel.Size = new Size(scoreLabel.Size.Width * 2, scoreLabel.Size.Height * 2);
+                this.scoreLabel.Text = "GAME OVER\n" + scoreLabel.Text;
             }
         }
-        private void shotAnim()
-        {
 
-        }
-        private void duckGif_Click(object sender, EventArgs e)
+
+
+
+        public void duckGif_Click(object sender, EventArgs e)
         {
-            score++;
+            PictureBox duck_ = (PictureBox)sender;
+            score += 1 * gameLVL;
             patrons--;
+            allPatrons--;
             patronsCheck();
             ScoreCheck();
 
-            duckGif.Visible = false;
-            newDuckLocation(duckGif);
+            duck_.Visible = false;
+            Duck tmp = ducks.Find((duck__) => duck__.getDuck().Equals(duck_));
+            tmp.newDuckLocation(duck_);
         }
 
         private void Game_Click(object sender, EventArgs e)
         {
             patrons--;
+            allPatrons--;
             patronsCheck();
         }
+
 
     }
 }

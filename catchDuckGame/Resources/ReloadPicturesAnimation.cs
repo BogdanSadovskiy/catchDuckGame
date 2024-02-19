@@ -13,7 +13,7 @@ namespace catchDuckGame.Resources
         private int currentIndex = 0;
         private int currentLoop = 0;
 
-        private bool b = true;
+        private int p = 0; //nothing
 
         public ReloadPicturesAnimation()
         {
@@ -32,13 +32,16 @@ namespace catchDuckGame.Resources
 
 
         }
-
+        public int getP()
+        {
+            return this.p;
+        }
         private void Timer_Tick(object sender, EventArgs e)
         {
 
             if (currentIndex < images.Count && currentLoop < 5)
             {
-                b = true;
+                
                 timer.Start();
                 pictureBox.Visible = true;
                 pictureBox.Image = images[currentIndex++];
@@ -55,23 +58,23 @@ namespace catchDuckGame.Resources
                 currentIndex = 0;
                 currentLoop = 0;
                 pictureBox.Visible = false;
-                b = false;
+                p = 1;
+
             }
 
 
         }
 
-        public int animation(PictureBox gun, Timer timer, ref bool isReload_)
+        public int animation(PictureBox gun, Timer timer)
         {
 
-
+            p = 2;
             this.pictureBox = gun;
             this.timer = timer;
             timer.Interval = 50;
             timer.Tick += new EventHandler(Timer_Tick);
             timer.Start();
-            isReload_ = b;
-            Console.WriteLine(isReload_);
+            Console.WriteLine(2);
             return 5;
         }
 
