@@ -122,7 +122,7 @@
             // 
             this.reloadPicture.BackColor = System.Drawing.Color.Transparent;
             this.reloadPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.reloadPicture.Image = global::catchDuckGame.Properties.Resources.counter_strike_cs;
+            this.reloadPicture.Image = global::catchDuckGame.Properties.Resources.cs1;
             this.reloadPicture.Location = new System.Drawing.Point(287, 319);
             this.reloadPicture.Name = "reloadPicture";
             this.reloadPicture.Size = new System.Drawing.Size(153, 163);

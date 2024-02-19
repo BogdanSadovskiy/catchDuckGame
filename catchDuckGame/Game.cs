@@ -1,4 +1,5 @@
-﻿using System;
+﻿using catchDuckGame.Resources;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -11,13 +12,16 @@ namespace catchDuckGame
         int score;
         int patrons;
         int currentDucks;
-        Timer patronsCheck = new Timer();
+        bool isReloading = false;
         Timer reloadGunTimer = new Timer();
-        Timer scoreCheck = new Timer();
+
+
         List<PictureBox> ducks = new List<PictureBox>();
+        ReloadPicturesAnimation ReloadPicturesAnimation = new ReloadPicturesAnimation();
         public Game()
         {
             InitializeComponent();
+            this.DoubleBuffered = true;
             ducks.Add(duckGif);
             bullet5.BackColor = Color.Transparent;
             bullet4.BackColor = Color.Transparent;
@@ -30,13 +34,7 @@ namespace catchDuckGame
 
             flyTimer.Interval = 15;
             flyTimer.Start();
-            patronsCheck.Interval = 1;
-            patronsCheck.Start();
-            patronsCheck.Tick += patronsCheck_Tick;
 
-            scoreCheck.Interval = 20;
-            scoreCheck.Tick += ScoreCheck_Tick;
-            scoreCheck.Start();
             speedOfDuck = 2;
             score = 0;
             patrons = 5;
@@ -44,7 +42,7 @@ namespace catchDuckGame
 
         }
 
-        private void ScoreCheck_Tick(object sender, EventArgs e)
+        private void ScoreCheck()
         {
             this.scoreLabel.Text = "Score: " + score;
         }
@@ -55,18 +53,16 @@ namespace catchDuckGame
         }
         private void reloadGun()
         {
-            reloadGunTimer.Interval = 2000;
-            reloadGunTimer.Start();
-            reloadGunTimer.Tick += reloadGunTimer_Tick;
-            reloadPicture.Visible = true;
+            patrons = ReloadPicturesAnimation.animation(this.reloadPicture, reloadGunTimer,ref isReloading);
+            if(!isReloading)patronsCheck();
+            Console.WriteLine(isReloading);
         }
-        private void reloadGunTimer_Tick(object sender, EventArgs e)
-        {
-            patrons = 5;
-            reloadGunTimer.Stop();
-            reloadPicture.Visible = false;
-        }
-        private void patronsCheck_Tick(object sender, EventArgs e)
+        /* private void reloadGunTimer_Tick(object sender, EventArgs e)
+         {
+             reloadGunTimer.Stop();
+             reloadPicture.Visible = false;
+         }*/
+        private void patronsCheck()
         {
 
             switch (patrons)
@@ -113,6 +109,7 @@ namespace catchDuckGame
         private void newDuckLocation(PictureBox picture)
         {
             flyTimer.Interval = 3000;
+            picture.Visible = false;
             picture.Location = new Point(0, picture.Location.Y);
 
         }
@@ -139,6 +136,9 @@ namespace catchDuckGame
         {
             score++;
             patrons--;
+            patronsCheck();
+            ScoreCheck();
+
             duckGif.Visible = false;
             newDuckLocation(duckGif);
         }
@@ -146,6 +146,7 @@ namespace catchDuckGame
         private void Game_Click(object sender, EventArgs e)
         {
             patrons--;
+            patronsCheck();
         }
 
     }

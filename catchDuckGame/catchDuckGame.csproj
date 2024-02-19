@@ -60,6 +60,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\ReloadPicturesAnimation.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -109,6 +110,36 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\counter-strike-cs.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cs1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cs2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cs3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cs4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cs5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cs6.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cs7.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cs8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cs9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cs10.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
