@@ -8,11 +8,11 @@ namespace catchDuckGame.Resources
     public class ReloadPicturesAnimation
     {
         private List<Image> images = new List<Image>();
-        private Timer timer;
+        private Timer timer= new Timer();
         private PictureBox pictureBox;
         private int currentIndex = 0;
         private int currentLoop = 0;
-
+        int index = 1;
         private int p = 0; //nothing
 
         public ReloadPicturesAnimation()
@@ -28,21 +28,21 @@ namespace catchDuckGame.Resources
             images.Add(global::catchDuckGame.Properties.Resources.cs9);
             images.Add(global::catchDuckGame.Properties.Resources.cs10);
 
-
-
+            timer.Tick += Timer_Tick;
+            timer.Interval = 50;
+           
 
         }
         public int getP()
         {
             return this.p;
         }
-        private void Timer_Tick(object sender, EventArgs e)
+        public void Timer_Tick(object sender, EventArgs e)
         {
 
             if (currentIndex < images.Count && currentLoop < 5)
             {
-                
-                timer.Start();
+                Console.WriteLine(index++);
                 pictureBox.Visible = true;
                 pictureBox.Image = images[currentIndex++];
                
@@ -59,23 +59,23 @@ namespace catchDuckGame.Resources
                 currentLoop = 0;
                 pictureBox.Visible = false;
                 p = 1;
-
+                index = 1;
             }
 
 
         }
 
-        public int animation(PictureBox gun, Timer timer)
+        public void animation(PictureBox gun)
         {
 
             p = 2;
             this.pictureBox = gun;
-            this.timer = timer;
-            timer.Interval = 50;
-            timer.Tick += new EventHandler(Timer_Tick);
+
+            
+           
             timer.Start();
             Console.WriteLine(2);
-            return 5;
+
         }
 
 

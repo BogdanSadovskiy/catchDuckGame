@@ -14,7 +14,6 @@ namespace catchDuckGame
         int patrons;
         int allPatrons = 60;
         int gameLVL = 1;
-        Timer reloadGunTimer = new Timer();
         Timer checkIfReloaded = new Timer();
 
         List<Duck> ducks = new List<Duck>();
@@ -23,7 +22,7 @@ namespace catchDuckGame
         {
             InitializeComponent();
             this.DoubleBuffered = true;
-         
+
             bullet5.BackColor = Color.Transparent;
             bullet4.BackColor = Color.Transparent;
             bullet3.BackColor = Color.Transparent;
@@ -36,50 +35,72 @@ namespace catchDuckGame
             flyTimer.Interval = 20;
             flyTimer.Start();
             speedOfDuck = 1;
-            ducks.Add(new Duck(duckGif, flyTimer, ClientSize, speedOfDuck));
-            addPictureToControls(ducks.Last().getDuck());
+            createDuck();
 
-           
             score = 0;
             patrons = 5;
-   
 
+            checkIfReloaded.Tick += CheckIfReloaded_Tick;
 
         }
-        private void addPictureToControls(PictureBox picture)
-        {
-            Controls.Add(picture);
-        }
+        
         private void ScoreCheck()
         {
             this.scoreLabel.Text = "Score: " + score;
-            if (score == 5 || score == 10 || score == 20 || score == 40 || score == 80)
+            if (score < 60)
             {
-                speedOfDuck++;
-                createDuck();
-                gameLVL++;
+                if (GameDifficulty.isLvlUp(score, gameLVL))
+                {
+                    speedOfDuck++;
+                    createDuck();
+                    gameLVL++;
+                    setSpeedOfDuck();
+                }
             }
         }
-
+        private void setSpeedOfDuck()
+        {
+            foreach (Duck duck in ducks)
+            {
+                duck.setGameLVL(gameLVL);
+                duck.initialspeedOfDuck = speedOfDuck;
+            }
+        }
         private void createDuck()
         {
-            ducks.Add(ducks.Last());
-            addPictureToControls(ducks.Last().getDuck());
+            PictureBox image = new PictureBox();
+            image.BackColor = System.Drawing.Color.Transparent;
+            image.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            image.Image = global::catchDuckGame.Properties.Resources.duck;
+            image.InitialImage = null;
+            image.Location = new System.Drawing.Point(1, 112);
+            image.Margin = new System.Windows.Forms.Padding(0);
+            image.Name = "duckGif";
+            image.Size = new System.Drawing.Size(42, 28);
+            image.TabIndex = 0;
+            image.TabStop = false;
+            image.Click += new System.EventHandler(this.duckGif_Click);
+            Controls.Add(image);
+            Duck newDuck = new Duck(image, ClientSize, speedOfDuck);
+
+            ducks.Add(newDuck);
+
         }
         private void reloadGun()
         {
-            
-            checkIfReloaded.Tick += CheckIfReloaded_Tick;
+
             checkIfReloaded.Interval = 100;
             checkIfReloaded.Start();
-            patrons = ReloadPicturesAnimation.animation(this.reloadPicture, reloadGunTimer);
+            ReloadPicturesAnimation.animation(this.reloadPicture);
 
 
         }
 
         private void CheckIfReloaded_Tick(object sender, EventArgs e)
         {
-            if (ReloadPicturesAnimation.getP() == 1) {
+            if (ReloadPicturesAnimation.getP() == 1)
+            {
+                patrons = 5;
                 patronsCheck();
                 checkIfReloaded.Stop();
             }
@@ -89,7 +110,7 @@ namespace catchDuckGame
 
         private void patronsCheck()
         {
-
+            allPatronsCheck();
             switch (patrons)
             {
                 case 5:
@@ -133,7 +154,7 @@ namespace catchDuckGame
 
         private void allPatronsCheck()
         {
-            if(allPatrons==0)
+            if (allPatrons == 0)
             {
                 this.scoreLabel.Location = new Point(this.ClientSize.Width / 2, this.ClientSize.Height / 2);
                 this.scoreLabel.Size = new Size(scoreLabel.Size.Width * 2, scoreLabel.Size.Height * 2);
@@ -141,28 +162,37 @@ namespace catchDuckGame
             }
         }
 
-
+        private bool shoot()
+        {
+            if (patrons > 0)
+            {
+                patrons--;
+                allPatrons--;
+                patronsCheck();
+                return true;
+            }
+            return false;
+        }
 
 
         public void duckGif_Click(object sender, EventArgs e)
         {
             PictureBox duck_ = (PictureBox)sender;
-            score += 1 * gameLVL;
-            patrons--;
-            allPatrons--;
-            patronsCheck();
-            ScoreCheck();
+            if (shoot())
+            {
+                score += 1 * gameLVL;
+                ScoreCheck();
 
-            duck_.Visible = false;
-            Duck tmp = ducks.Find((duck__) => duck__.getDuck().Equals(duck_));
-            tmp.newDuckLocation(duck_);
+                duck_.Visible = false;
+                Duck tmp = ducks.Find((duck__) => duck__.getDuck().Equals(duck_));
+                tmp.newDuckLocation(duck_);
+            }
         }
 
         private void Game_Click(object sender, EventArgs e)
         {
-            patrons--;
-            allPatrons--;
-            patronsCheck();
+          shoot();
+            Console.WriteLine(ducks.Count);
         }
 
 

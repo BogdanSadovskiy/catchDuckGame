@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,19 +15,23 @@ namespace catchDuckGame.Resources
     public class Duck
     {
         Random r = new Random();
-        PictureBox duckAnimatio { get; set; }
-        Timer timer { get; set; }
+        public PictureBox duckAnimatio { get; set; }
+        Timer timer = new Timer();
+        Image tmp;
         Size clientSize;
         Size initialDuckSize;
         int gameLVL;
         int propocion;
-        int speedOfDuck;
-        public Duck(PictureBox duck_, Timer timer_, Size clientSize_, int speedOfDuck_)
+        public int speedOfDuck {  get; set; }   
+        public int initialspeedOfDuck;
+        public Duck(PictureBox duck_, Size clientSize_, int speedOfDuck_)
         {
+  
             this.duckAnimatio = duck_;
-            this.timer = timer_;
+            tmp = duck_.Image;
             this.clientSize = clientSize_;
             this.speedOfDuck = speedOfDuck_;
+            this.initialspeedOfDuck = speedOfDuck;
             this.initialDuckSize = duckAnimatio.Size;
             propocion = initialDuckSize.Width / initialDuckSize.Height;
             this.duckAnimatio.Visible = true;
@@ -33,10 +40,7 @@ namespace catchDuckGame.Resources
         }
 
 
-        private void DuckAnimatio_Click(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
+     
 
         public PictureBox getDuck()
         {
@@ -48,38 +52,45 @@ namespace catchDuckGame.Resources
         }
         private int randomizeLocation()
         {
-           return r.Next(100,clientSize.Height/2);
+           return r.Next(50,clientSize.Height/2);
             
         }
         private int generateRandomIntervalForDuckAppearing()
         {
-            return r.Next(1000, 3000);
+            return r.Next(500, 3000);
         }
-        private Size randomizeSizeOfDuck()
+   
+      private void randomizeSpeedOfDuck()
         {
-            int x = 0, y = 0;
-            if (duckAnimatio.Size.Width <= 20)
+            int speed = 0;
+            if(speedOfDuck - initialspeedOfDuck > 3)
             {
-                x = r.Next(duckAnimatio.Width, duckAnimatio.Width * 2);
+                speed = r.Next(-3, 0);
             }
-            else if (duckAnimatio.Size.Width >= 60)
-            {
-                x = r.Next( duckAnimatio.Width / 2, duckAnimatio.Width);
+            else if(speedOfDuck - speedOfDuck < 3) {
+
+                speed = r.Next(0, 3);
             }
             else
             {
-                 x = r.Next(duckAnimatio.Width / 2, duckAnimatio.Width * 2);
-                
+                if (r.Next(0, 1) == 0)
+                {
+                    speed++;
+                }
+                else speed--;
             }
-            y = (int)(x / 1.5);
-            return new Size(x, y);
+            if ((speedOfDuck + speed) > 0)
+            {
+                this.speedOfDuck += speed;
+            }
         }
+
         public void newDuckLocation(PictureBox picture)
         {
             timer.Interval = generateRandomIntervalForDuckAppearing();
             picture.Visible = false;
             picture.Location = new Point(0, randomizeLocation());
-            picture.Size = randomizeSizeOfDuck();
+            randomizeSpeedOfDuck();
           
         }
 

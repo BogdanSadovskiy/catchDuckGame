@@ -47,10 +47,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.reloadPicture)).BeginInit();
             this.SuspendLayout();
             // 
-            // flyTimer
-            // 
-          
-            // 
             // bullet5
             // 
             this.bullet5.BackColor = System.Drawing.Color.Transparent;
@@ -109,9 +105,11 @@
             // duckGif
             // 
             this.duckGif.BackColor = System.Drawing.Color.Transparent;
+            this.duckGif.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.duckGif.Image = global::catchDuckGame.Properties.Resources.duck;
-            this.duckGif.InitialImage = global::catchDuckGame.Properties.Resources.duck__1_;
+            this.duckGif.InitialImage = null;
             this.duckGif.Location = new System.Drawing.Point(1, 112);
+            this.duckGif.Margin = new System.Windows.Forms.Padding(0);
             this.duckGif.Name = "duckGif";
             this.duckGif.Size = new System.Drawing.Size(42, 28);
             this.duckGif.TabIndex = 0;
